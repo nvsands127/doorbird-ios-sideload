@@ -1,3 +1,4 @@
+
 name: Sideload to iPhone
 
 on: [workflow_dispatch]
@@ -5,9 +6,6 @@ on: [workflow_dispatch]
 jobs:
   build:
     runs-on: macos-latest
-    defaults:
-      run:
-        working-directory: ./doorbird_app  # ← THIS IS THE FIX
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -20,19 +18,19 @@ jobs:
         with:
           flutter-version: '3.24.3'
 
-      - name: Verify project
+      - name: Verify project root
         run: |
           pwd
           ls -la
           cat pubspec.yaml
 
-      - name: Get deps
+      - name: Get dependencies
         run: flutter pub get
 
-      - name: Pod install
+      - name: Install CocoaPods
         run: cd ios && pod install
 
-      - name: Build & Install
+      - name: Build & Install to iPhone
         env:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
