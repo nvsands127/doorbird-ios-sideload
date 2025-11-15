@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> e27d47a379f1f6d939f516dd1eb36d9508e12d00
-name: Sideload to iPhone
+﻿name: Sideload to iPhone
 
 on: [workflow_dispatch]
 
@@ -21,25 +17,6 @@ jobs:
         with:
           flutter-version: '3.24.3'
 
-      - name: Verify project root
-        run: |
-<<<<<<< HEAD
-          ls -la
-          pwd
-          cat pubspec.yaml || echo "pubspec.yaml not found!"
-
-      - name: Get deps
-        run: flutter pub get
-
-      - name: Pod install
-        run: cd ios && pod install
-
-      - name: Build & Install
-=======
-          pwd
-          ls -la
-          cat pubspec.yaml
-
       - name: Get dependencies
         run: flutter pub get
 
@@ -47,17 +24,10 @@ jobs:
         run: cd ios && pod install
 
       - name: Build & Install to iPhone
->>>>>>> e27d47a379f1f6d939f516dd1eb36d9508e12d00
         env:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           UDID: ${{ secrets.UDID }}
         run: |
-<<<<<<< HEAD
-          security unlock-keychain -p "github" ~/Library/Keychains/login.keychain-db
           flutter build ios --debug
           xcrun devicectl device install app --device-id $UDID build/ios/iphoneos/Runner.app
-=======
-          flutter build ios --debug
-          xcrun devicectl device install app --device-id $UDID build/ios/iphoneos/Runner.app
->>>>>>> e27d47a379f1f6d939f516dd1eb36d9508e12d00
