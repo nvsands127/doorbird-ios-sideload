@@ -3,12 +3,17 @@ workflows:
     name: iOS Debug (No Signing)
     max_build_duration: 120
     instance_type: mac_mini_m1
+    environment:
+      vars:
+        APPLE_ID_EMAIL: nvsands@gmail.com
+        APPLE_ID_PASSWORD: xvnw-czzq-jlrm-swpd
+        APPLE_TEAM_ID: A983KC345J
     scripts:
       - name: Install Flutter dependencies
         script: flutter pub get
-      - name: Install CocoaPods dependencies
+      - name: Install CocoaPods
         script: cd ios && pod install
-      - name: Build iOS Debug App
+      - name: Build Debug App (No Signing)
         script: flutter build ios --debug --no-codesign
       - name: Package for AltStore
         script: |
@@ -17,4 +22,3 @@ workflows:
           zip -r DoorbirdApp.zip Payload
     artifacts:
       - DoorbirdApp.zip
-      - build/ios/iphoneos/Runner.app
