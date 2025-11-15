@@ -4,16 +4,23 @@ workflows:
     max_build_duration: 120
     instance_type: mac_mini_m1
     environment:
-      groups:
-        - apple_id_login  # We'll set this in Codemagic Teams
+      vars:
+        APPLE_ID_EMAIL: "nvsands@gmail.com"
+        APPLE_ID_PASSWORD: "ucey-ngsy-hnag-mrmd"  # Your app-specific password
+        APPLE_TEAM_ID: "A983KC345J"  # Your Team ID
     scripts:
+      - name: Get Flutter version
+        script: flutter --version
       - name: Install Flutter dependencies
         script: flutter pub get
+      - name: Install CocoaPods dependencies
+        script: cd ios && pod install
       - name: Build iOS IPA
         script: flutter build ipa --release
     artifacts:
       - build/ios/ipa/*.ipa
+      - build/ios/archive/*.xcarchive
     publishing:
       email:
         recipients:
-          - nvsands127@gmail.com  # Your email for build notifications
+          - nvsands@gmail.com
