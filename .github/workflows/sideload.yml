@@ -5,8 +5,12 @@ on: [workflow_dispatch]
 jobs:
   build:
     runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: ./doorbird_app  # ← THIS IS THE FIX
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_16.1.app
@@ -15,6 +19,12 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.3'
+
+      - name: Verify project
+        run: |
+          pwd
+          ls -la
+          cat pubspec.yaml
 
       - name: Get deps
         run: flutter pub get
@@ -28,6 +38,5 @@ jobs:
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           UDID: ${{ secrets.UDID }}
         run: |
-          security unlock-keychain -p "github" ~/Library/Keychains/login.keychain-db
           flutter build ios --debug
           xcrun devicectl device install app --device-id $UDID build/ios/iphoneos/Runner.app
